@@ -1321,17 +1321,29 @@ void nanny(struct descriptor_data *d, char *arg)
   switch (STATE(d)) {
   case CON_ACCOUNT_LOGIN:
     show_account_login_menu(d);
-    STATE(d) = CON_ACCOUNT_MENU;
+    /* Only change to CON_ACCOUNT_MENU if account exists, else stay in login or go to account creation */
+    /* Prevent disconnect unless explicit error or logout */
+    /* Example logic, adjust as needed for your account system: */
+    if (account_exists(arg)) {
+      STATE(d) = CON_ACCOUNT_MENU;
+    } else {
+      STATE(d) = CON_ACCOUNT_CREATE;
+    }
     break;
 
   case CON_ACCOUNT_MENU:
-    handle_account_login(d, arg);
+    if (!handle_account_login(d, arg)) {
+      /* If login fails, stay in menu or show error, do not disconnect */
+      write_to_output(d, "Login failed. Try again or type 'quit' to disconnect.\r\n");
+      STATE(d) = CON_ACCOUNT_MENU;
+    }
     break;
 
   case CON_GET_NAME: /* legacy, now unused */
     /* Instead of disconnecting, redirect to account login system */
     STATE(d) = CON_ACCOUNT_LOGIN;
     nanny(d, arg); /* Immediately show account login menu */
+    /* Do not disconnect, always redirect to account system */
     break;
 
   case CON_NAME_CNFRM:		/* wait for conf. of new name    */
