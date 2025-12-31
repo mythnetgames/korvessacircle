@@ -1,16 +1,24 @@
 #include <ctype.h>
 
-// Converts |#RRGGBB to ANSI 24-bit color, and |n to reset.
+
+// Map RGB to xterm 256-color code
+int rgb_to_xterm(int r, int g, int b) {
+  int ir = (r * 5 + 127) / 255;
+  int ig = (g * 5 + 127) / 255;
+  int ib = (b * 5 + 127) / 255;
+  return 16 + 36 * ir + 6 * ig + ib;
+}
+
+// Converts |#RRGGBB to xterm 256-color ANSI, and |n to reset.
 // input: source string with color tags
 // output: destination buffer (should be large enough)
-void parse_custom_color_tags(const char *input, char *output) {
+void parse_xterm_color_tags(const char *input, char *output) {
   const char *src = input;
   char *dst = output;
   while (*src) {
     if (src[0] == '|' && src[1] == '#'
       && isxdigit(src[2]) && isxdigit(src[3]) && isxdigit(src[4])
       && isxdigit(src[5]) && isxdigit(src[6]) && isxdigit(src[7])) {
-      // Parse RRGGBB
       char hex[3] = {0};
       hex[0] = src[2]; hex[1] = src[3];
       int r = strtol(hex, NULL, 16);
@@ -18,8 +26,8 @@ void parse_custom_color_tags(const char *input, char *output) {
       int g = strtol(hex, NULL, 16);
       hex[0] = src[6]; hex[1] = src[7];
       int b = strtol(hex, NULL, 16);
-      // Write ANSI code
-      dst += sprintf(dst, "\033[38;2;%d;%d;%dm", r, g, b);
+      int xterm_code = rgb_to_xterm(r, g, b);
+      dst += sprintf(dst, "\033[38;5;%dm", xterm_code);
       src += 8;
     } else if (src[0] == '|' && src[1] == 'n') {
       dst += sprintf(dst, "\033[0m");
@@ -1410,7 +1418,7 @@ int new_descriptor(socket_t s)
   descriptor_list = newd;
 
   char greetings_buf[8192];
-  parse_custom_color_tags(GREETINGS, greetings_buf);
+  parse_xterm_color_tags(GREETINGS, greetings_buf);
   write_to_output(newd, "%s", greetings_buf);
 
   return (0);
