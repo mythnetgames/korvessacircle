@@ -37,6 +37,8 @@
 #define USE_AUTOEQ	0	/* TRUE/FALSE aren't defined yet. */
 
 
+/* End of file guard */
+#endif /* STRUCTS_H */
 /* preamble *************************************************************/
 
 /*
