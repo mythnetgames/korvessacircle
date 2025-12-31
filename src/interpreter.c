@@ -1,12 +1,4 @@
-void do_craft(struct char_data *ch, char *argument, int cmd, int subcmd) {
-  send_to_char(ch, "Crafting is not yet implemented.\r\n");
-}
 
-void do_persuade(struct char_data *ch, char *argument, int cmd, int subcmd) {
-  send_to_char(ch, "Persuade is not yet implemented.\r\n");
-}
-ACMD(do_craft);
-ACMD(do_persuade);
 /* Account system connection states */
 #define CON_ACCOUNT_LOGIN 2001
 #define CON_ACCOUNT_MENU  2002
@@ -46,6 +38,15 @@ ACMD(do_persuade);
 #include "spells.h"
 #include "handler.h"
 #include "mail.h"
+
+// KorvessaRPI: Command stubs (must be after includes for correct prototypes)
+void do_craft(struct char_data *ch, char *argument, int cmd, int subcmd) {
+  send_to_char(ch, "Crafting is not yet implemented.\r\n");
+}
+
+void do_persuade(struct char_data *ch, char *argument, int cmd, int subcmd) {
+  send_to_char(ch, "Persuade is not yet implemented.\r\n");
+}
 
 #include <stddef.h>
 #include <string.h>
