@@ -1,3 +1,6 @@
+/* Account system connection states */
+#define CON_ACCOUNT_LOGIN 2001
+#define CON_ACCOUNT_MENU  2002
 /* KorvessaRPI: Final chargen states */
   #define CON_QSTANDING      1006
   #define CON_QBACKGROUND    1007
@@ -1299,72 +1302,18 @@ void nanny(struct descriptor_data *d, char *arg)
   skip_spaces(&arg);
 
   switch (STATE(d)) {
-  case CON_GET_NAME:		/* wait for input of name */
-    if (d->character == NULL) {
-      CREATE(d->character, struct char_data, 1);
-      clear_char(d->character);
-      CREATE(d->character->player_specials, struct player_special_data, 1);
-      d->character->desc = d;
-    }
-    if (!*arg)
-      STATE(d) = CON_CLOSE;
-    else {
-      char buf[MAX_INPUT_LENGTH], tmp_name[MAX_INPUT_LENGTH];
-      struct char_file_u tmp_store;
-      int player_i;
+  case CON_ACCOUNT_LOGIN:
+    show_account_login_menu(d);
+    STATE(d) = CON_ACCOUNT_MENU;
+    break;
 
-      if ((_parse_name(arg, tmp_name)) || strlen(tmp_name) < 2 ||
-	  strlen(tmp_name) > MAX_NAME_LENGTH || !Valid_Name(tmp_name) ||
-	  fill_word(strcpy(buf, tmp_name)) || reserved_word(buf)) {	/* strcpy: OK (mutual MAX_INPUT_LENGTH) */
-	write_to_output(d, "Invalid name, please try another.\r\nName: ");
-	return;
-      }
-      if ((player_i = load_char(tmp_name, &tmp_store)) > -1) {
-	store_to_char(&tmp_store, d->character);
-	GET_PFILEPOS(d->character) = player_i;
+  case CON_ACCOUNT_MENU:
+    handle_account_login(d, arg);
+    break;
 
-	if (PLR_FLAGGED(d->character, PLR_DELETED)) {
-	  /* We get a false positive from the original deleted character. */
-	  free_char(d->character);
-	  /* Check for multiple creations... */
-	  if (!Valid_Name(tmp_name)) {
-	    write_to_output(d, "Invalid name, please try another.\r\nName: ");
-	    return;
-	  }
-	  CREATE(d->character, struct char_data, 1);
-	  clear_char(d->character);
-	  CREATE(d->character->player_specials, struct player_special_data, 1);
-	  d->character->desc = d;
-	  CREATE(d->character->player.name, char, strlen(tmp_name) + 1);
-	  strcpy(d->character->player.name, CAP(tmp_name));	/* strcpy: OK (size checked above) */
-	  GET_PFILEPOS(d->character) = player_i;
-	  write_to_output(d, "Did I get that right, %s (Y/N)? ", tmp_name);
-	  STATE(d) = CON_NAME_CNFRM;
-	} else {
-	  /* undo it just in case they are set */
-	  REMOVE_BIT(PLR_FLAGS(d->character),
-		     PLR_WRITING | PLR_MAILING | PLR_CRYO);
-	  REMOVE_BIT(AFF_FLAGS(d->character), AFF_GROUP);
-	  write_to_output(d, "Password: ");
-	  echo_off(d);
-	  d->idle_tics = 0;
-	  STATE(d) = CON_PASSWORD;
-	}
-      } else {
-	/* player unknown -- make new character */
-
-	/* Check for multiple creations of a character. */
-	if (!Valid_Name(tmp_name)) {
-	  write_to_output(d, "Invalid name, please try another.\r\nName: ");
-	  return;
-	}
-	CREATE(d->character->player.name, char, strlen(tmp_name) + 1);
-	strcpy(d->character->player.name, CAP(tmp_name));	/* strcpy: OK (size checked above) */
-
-	write_to_output(d, "Did I get that right, %s (Y/N)? ", tmp_name);
-	STATE(d) = CON_NAME_CNFRM;
-      }
-    }
+  case CON_GET_NAME: /* legacy, now unused */
+    write_to_output(d, "Account system is now in use. Please reconnect.\r\n");
+    STATE(d) = CON_CLOSE;
     break;
 
   case CON_NAME_CNFRM:		/* wait for conf. of new name    */

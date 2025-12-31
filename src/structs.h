@@ -1014,6 +1014,9 @@ struct descriptor_data {
    struct descriptor_data *snooping; /* Who is this char snooping	*/
    struct descriptor_data *snoop_by; /* And who is snooping this char	*/
    struct descriptor_data *next; /* link to next descriptor		*/
+    /* KorvessaRPI: Account system fields */
+    struct account *account;     /* pointer to logged-in account */
+    int account_menu_state;      /* state for account menu flow */
 };
 
 
