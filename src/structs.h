@@ -7,6 +7,8 @@
 
 #define NOWHERE -1 /* Used for invalid room numbers, fixes act.informative.c error */
 
+#define NOTHING -1 /* Used for invalid object references, fixes act.item.c error */
+
 #include "korvessa_defs.h"
 
 typedef int IDXTYPE; /* Added to fix unknown type errors for vnum/rnum typedefs */
