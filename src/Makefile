@@ -30,7 +30,10 @@ OBJFILES = act.comm.o act.informative.o act.item.o act.movement.o \
 	graph.o handler.o house.o interpreter.o limits.o magic.o mail.o \
 	mobact.o modify.o objsave.o olc.o random.o shop.o spec_assign.o \
 	spec_procs.o spell_parser.o spells.o utils.o weather.o \
-	bsd-snprintf.o
+	bsd-snprintf.o korvessa_defs.o
+# Build rule for korvessa_defs.o
+korvessa_defs.o: korvessa_defs.c korvessa_defs.h structs.h
+	$(CC) -c $(CFLAGS) korvessa_defs.c
 
 CXREF_FILES = act.comm.c act.informative.c act.item.c act.movement.c \
 	act.offensive.c act.other.c act.social.c act.wizard.c alias.c ban.c \
