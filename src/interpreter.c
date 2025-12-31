@@ -38,6 +38,10 @@
 #include "spells.h"
 #include "handler.h"
 #include "mail.h"
+
+#include <stddef.h>
+#include <string.h>
+#include <stdlib.h>
 #include "screen.h"
 
 

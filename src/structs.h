@@ -1012,15 +1012,15 @@ struct descriptor_data {
    int  bufptr;			/* ptr to end of current output		*/
    int	bufspace;		/* space left in the output buffer	*/
    struct txt_block *large_outbuf; /* ptr to large buffer, if we need it */
-   struct txt_q input;		/* q of unprocessed input		*/
-   struct char_data *character;	/* linked to char			*/
-   struct char_data *original;	/* original char if switched		*/
-   struct descriptor_data *snooping; /* Who is this char snooping	*/
-   struct descriptor_data *snoop_by; /* And who is snooping this char	*/
-   struct descriptor_data *next; /* link to next descriptor		*/
-    /* KorvessaRPI: Account system fields */
-    struct account *account;     /* pointer to logged-in account */
-    int account_menu_state;      /* state for account menu flow */
+   struct txt_q input;           /* q of unprocessed input        */
+   struct char_data *character;  /* linked to char (active player)*/
+   struct char_data *original;   /* original char if switched     */
+   struct descriptor_data *snooping; /* Who is this char snooping   */
+   struct descriptor_data *snoop_by; /* And who is snooping this char*/
+   struct descriptor_data *next; /* link to next descriptor       */
+   /* KorvessaRPI: Account system fields */
+   struct account *account;      /* pointer to logged-in account  */
+   int account_menu_state;       /* state for account menu flow   */
 };
 
 

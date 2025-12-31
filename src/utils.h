@@ -8,6 +8,10 @@
 *  CircleMUD is based on DikuMUD, Copyright (C) 1990, 1991.               *
 ************************************************************************ */
 
+#include <stddef.h>
+#include <string.h>
+#include <stdlib.h>
+
 
 /* external declarations and prototypes **********************************/
 

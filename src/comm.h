@@ -8,6 +8,9 @@
 *  CircleMUD is based on DikuMUD, Copyright (C) 1990, 1991.               *
 ************************************************************************ */
 
+#include <stddef.h>
+#include <string.h>
+
 #define NUM_RESERVED_DESCS	8
 
 /* comm.c */
