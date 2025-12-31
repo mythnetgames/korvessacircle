@@ -1,8 +1,6 @@
 #ifndef KORVESSA_DEFS_H
 #define KORVESSA_DEFS_H
 
-#include "structs.h"
-
 /* Races */
 typedef enum {
     RACE_HUMAN,
