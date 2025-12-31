@@ -1,11 +1,11 @@
-                                  Korvessa RPI
-                              May He Watch over you
+\033[1;35m                                  Korvessa RPI\033[0m
+\033[1;93m                              May He Watch over you\033[0m
 
-                            Based on CircleMUD 3.1,
-                            Created by Jeremy Elson
+\033[0;32m                            Based on CircleMUD 3.1,\033[0m
+\033[0;32m                            Created by Jeremy Elson\033[0m
 
-                      A derivative of DikuMUD (GAMMA 0.0),
-                created by Hans-Henrik Staerfeldt, Katja Nyboe,
-               Tom Madsen, Michael Seifert, and Sebastian Hammer
+\033[0;35m                      A derivative of DikuMUD (GAMMA 0.0),\033[0m
+\033[0;35m                created by Hans-Henrik Staerfeldt, Katja Nyboe,\033[0m
+\033[0;35m               Tom Madsen, Michael Seifert, and Sebastian Hammer\033[0m
 
-Enter your account name:
+\033[1;32mEnter your account name:\033[0m
