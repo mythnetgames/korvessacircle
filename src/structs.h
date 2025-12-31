@@ -3,6 +3,8 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
+#include "korvessa_defs.h"
+
 typedef int IDXTYPE; /* Added to fix unknown type errors for vnum/rnum typedefs */
 
 #define SPECIAL(name) \
@@ -471,7 +473,7 @@ typedef int IDXTYPE; /* Added to fix unknown type errors for vnum/rnum typedefs 
 #if defined(HAVE_UNSAFE_CRYPT) && MAX_PWD_LENGTH == 10
 #error You need to increase MAX_PWD_LENGTH to at least 20.
 #error See the comment near these errors for more explanation.
-#endif
+#endif /* STRUCTS_H */
 
 /**********************************************************************
 * Structures                                                          *
