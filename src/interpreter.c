@@ -1329,8 +1329,9 @@ void nanny(struct descriptor_data *d, char *arg)
     break;
 
   case CON_GET_NAME: /* legacy, now unused */
-    write_to_output(d, "Account system is now in use. Please reconnect.\r\n");
-    STATE(d) = CON_CLOSE;
+    /* Instead of disconnecting, redirect to account login system */
+    STATE(d) = CON_ACCOUNT_LOGIN;
+    nanny(d, arg); /* Immediately show account login menu */
     break;
 
   case CON_NAME_CNFRM:		/* wait for conf. of new name    */
