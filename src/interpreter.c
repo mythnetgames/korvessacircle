@@ -1,3 +1,5 @@
+ACMD(do_craft);
+ACMD(do_persuade);
 /* Account system connection states */
 #define CON_ACCOUNT_LOGIN 2001
 #define CON_ACCOUNT_MENU  2002
@@ -1431,7 +1433,7 @@ void nanny(struct descriptor_data *d, char *arg)
     *(GET_PASSWD(d->character) + MAX_PWD_LENGTH) = '\0';
 
     write_to_output(d, "\r\nPlease retype password: ");
-    if (STATE
+    if (STATE(d) == CON_NEWPASSWD)
       STATE(d) = CON_CNFPASSWD;
     else
       STATE(d) = CON_CHPWD_VRFY;
