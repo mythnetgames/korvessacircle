@@ -39,6 +39,8 @@
 #include "handler.h"
 #include "mail.h"
 
+#include "account_menu.h"
+
 // KorvessaRPI: Command stubs (must be after includes for correct prototypes)
 void do_craft(struct char_data *ch, char *argument, int cmd, int subcmd) {
   send_to_char(ch, "Crafting is not yet implemented.\r\n");
