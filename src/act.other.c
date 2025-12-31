@@ -157,7 +157,9 @@ ACMD(do_sneak)
 
   percent = rand_number(1, 101);	/* 101% is a complete failure */
 
-  if (percent > GET_SKILL(ch, SKILL_SNEAK) + dex_app_skill[GET_DEX(ch)].sneak)
+  /* Skill check: base skill + DEX modifier */
+  int dex_mod = (GET_DEX(ch) - 10) / 2; /* DEX modifier, D&D style */
+  if (percent > GET_SKILL(ch, SKILL_SNEAK) + dex_mod * 2)
     return;
 
   af.type = SKILL_SNEAK;
@@ -186,7 +188,9 @@ ACMD(do_hide)
 
   percent = rand_number(1, 101);	/* 101% is a complete failure */
 
-  if (percent > GET_SKILL(ch, SKILL_HIDE) + dex_app_skill[GET_DEX(ch)].hide)
+  /* Skill check: base skill + DEX modifier */
+  int dex_mod = (GET_DEX(ch) - 10) / 2;
+  if (percent > GET_SKILL(ch, SKILL_HIDE) + dex_mod * 2)
     return;
 
   SET_BIT(AFF_FLAGS(ch), AFF_HIDE);

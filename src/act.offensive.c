@@ -198,7 +198,9 @@ ACMD(do_backstab)
   }
 
   percent = rand_number(1, 101);	/* 101% is a complete failure */
-  prob = GET_SKILL(ch, SKILL_BACKSTAB);
+  /* Skill check: base skill + DEX modifier */
+  int dex_mod = (GET_DEX(ch) - 10) / 2;
+  prob = GET_SKILL(ch, SKILL_BACKSTAB) + dex_mod * 2;
 
   if (AWAKE(vict) && (percent > prob))
     damage(ch, vict, 0, SKILL_BACKSTAB);
@@ -331,7 +333,9 @@ ACMD(do_bash)
     return;
   }
   percent = rand_number(1, 101);	/* 101% is a complete failure */
-  prob = GET_SKILL(ch, SKILL_BASH);
+  /* Skill check: base skill + STR modifier */
+  int str_mod = (GET_STR(ch) - 10) / 2;
+  prob = GET_SKILL(ch, SKILL_BASH) + str_mod * 2;
 
   if (MOB_FLAGGED(vict, MOB_NOBASH))
     percent = 101;
@@ -389,7 +393,9 @@ ACMD(do_rescue)
     return;
   }
   percent = rand_number(1, 101);	/* 101% is a complete failure */
-  prob = GET_SKILL(ch, SKILL_RESCUE);
+  /* Skill check: base skill + STR modifier */
+  str_mod = (GET_STR(ch) - 10) / 2;
+  prob = GET_SKILL(ch, SKILL_RESCUE) + str_mod * 2;
 
   if (percent > prob) {
     send_to_char(ch, "You fail the rescue!\r\n");
@@ -440,7 +446,9 @@ ACMD(do_kick)
   }
   /* 101% is a complete failure */
   percent = ((10 - (compute_armor_class(vict) / 10)) * 2) + rand_number(1, 101);
-  prob = GET_SKILL(ch, SKILL_KICK);
+  /* Skill check: base skill + STR modifier */
+  str_mod = (GET_STR(ch) - 10) / 2;
+  prob = GET_SKILL(ch, SKILL_KICK) + str_mod * 2;
 
   if (percent > prob) {
     damage(ch, vict, 0, SKILL_KICK);

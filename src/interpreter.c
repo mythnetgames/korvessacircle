@@ -1,3 +1,12 @@
+/* KorvessaRPI: Final chargen states */
+  #define CON_QSTANDING      1006
+  #define CON_QBACKGROUND    1007
+  /* KorvessaRPI: More chargen states */
+  #define CON_QSTATS        1003
+  #define CON_QSKILLS       1004
+  #define CON_QPUBLIC       1005
+  { "craft"    , POS_STANDING, do_craft    , 0, 0 },
+  { "persuade"  , POS_STANDING, do_persuade , 0, 0 },
 /* ************************************************************************
 *   File: interpreter.c                                 Part of CircleMUD *
 *  Usage: parse user commands, search for specials, call ACMD functions   *
@@ -8,7 +17,12 @@
 *  CircleMUD is based on DikuMUD, Copyright (C) 1990, 1991.               *
 ************************************************************************ */
 
+
 #define __INTERPRETER_C__
+
+/* KorvessaRPI: New chargen states */
+#define CON_QRACE         1001
+#define CON_QPERSONALITY  1002
 
 #include "conf.h"
 #include "sysdep.h"
@@ -1026,7 +1040,7 @@ char *two_arguments(char *argument, char *first_arg, char *second_arg)
 
 
 
-/*
+ /*
  * determine if a given string is an abbreviation of another
  * (now works symmetrically -- JE 7/25/94)
  *
@@ -1051,7 +1065,7 @@ int is_abbrev(const char *arg1, const char *arg2)
 
 
 
-/*
+ /*
  * Return first space-delimited token in arg1; remainder of string in arg2.
  *
  * NOTE: Requires sizeof(arg2) >= sizeof(string)
@@ -1277,7 +1291,7 @@ int perform_dupe_check(struct descriptor_data *d)
 
 
 
-/* deal with newcomers and other non-playing sockets */
+ /* deal with newcomers and other non-playing sockets */
 void nanny(struct descriptor_data *d, char *arg)
 {
   int load_result;	/* Overloaded variable */
@@ -1463,7 +1477,7 @@ void nanny(struct descriptor_data *d, char *arg)
     *(GET_PASSWD(d->character) + MAX_PWD_LENGTH) = '\0';
 
     write_to_output(d, "\r\nPlease retype password: ");
-    if (STATE(d) == CON_NEWPASSWD)
+    if (STATE
       STATE(d) = CON_CNFPASSWD;
     else
       STATE(d) = CON_CHPWD_VRFY;
@@ -1492,7 +1506,8 @@ void nanny(struct descriptor_data *d, char *arg)
     }
     break;
 
-  case CON_QSEX:		/* query sex of new user         */
+
+  case CON_QSEX: /* query sex of new user */
     switch (*arg) {
     case 'm':
     case 'M':
@@ -1503,14 +1518,115 @@ void nanny(struct descriptor_data *d, char *arg)
       d->character->player.sex = SEX_FEMALE;
       break;
     default:
-      write_to_output(d, "That is not a sex..\r\n"
-		"What IS your sex? ");
+      write_to_output(d, "That is not a sex..\r\nWhat IS your sex? ");
       return;
     }
+    /* KorvessaRPI: Proceed to race selection */
+    write_to_output(d, "\r\nPlease select your race:\r\n[Scaffold: List races here]\r\nRace: ");
+    STATE(d) = CON_QRACE;
+    break;
 
+  case CON_QRACE: {
+    /* Validate and store race selection */
+    int race_idx = validate_race(arg);
+    if (race_idx < 0) {
+      write_to_output(d, "\r\nInvalid race. Please select from the following:\r\n");
+      for (int i = 0; i < NUM_KORVESSA_RACES; ++i)
+        write_to_output(d, "%s\r\n", korvessa_race_names[i]);
+      write_to_output(d, "Race: ");
+      return;
+    }
+    d->character->player_specials->korvessa_race = race_idx;
+    write_to_output(d, "\r\nPlease select your personality:\r\n");
+    for (int i = 0; i < NUM_KORVESSA_PERSONALITIES; ++i)
+      write_to_output(d, "%s\r\n", korvessa_personality_names[i]);
+    write_to_output(d, "Personality: ");
+    STATE(d) = CON_QPERSONALITY;
+    break;
+  }
+
+  case CON_QPERSONALITY: {
+    /* Validate and store personality selection */
+    int pers_idx = validate_personality(arg);
+    if (pers_idx < 0) {
+      write_to_output(d, "\r\nInvalid personality. Please select from the following:\r\n");
+      for (int i = 0; i < NUM_KORVESSA_PERSONALITIES; ++i)
+        write_to_output(d, "%s\r\n", korvessa_personality_names[i]);
+      write_to_output(d, "Personality: ");
+      return;
+    }
+    d->character->player_specials->korvessa_personality = pers_idx;
+    apply_personality_bonuses(d->character, pers_idx);
+    write_to_output(d, "\r\nAssign your stats (STR, DEX, CON, INT, WIS, CHA):\r\n[Scaffold: Stat assignment instructions here]\r\nStats: ");
+    STATE(d) = CON_QSTATS;
+    break;
+  }
+
+  case CON_QSTATS: {
+    /* Validate and store stat assignment */
+    int str, dex, con, intel, wis, cha;
+    if (sscanf(arg, "%d %d %d %d %d %d", &str, &dex, &con, &intel, &wis, &cha) != 6) {
+      write_to_output(d, "\r\nInvalid stat format. Please enter six numbers (STR DEX CON INT WIS CHA): ");
+      return;
+    }
+    d->character->real_abils.str = str;
+    d->character->real_abils.dex = dex;
+    d->character->real_abils.con = con;
+    d->character->real_abils.intel = intel;
+    d->character->real_abils.wis = wis;
+    d->character->real_abils.cha = cha;
+    d->character->aff_abils = d->character->real_abils;
+    write_to_output(d, "\r\nSelect your starting skills:\r\n[Scaffold: Skill selection instructions here]\r\nSkills: ");
+    STATE(d) = CON_QSKILLS;
+    break;
+  }
+
+  case CON_QSKILLS: {
+    /* TODO: Validate and store skill selection */
+    // For now, just store the raw string as a placeholder
+    // In future, parse and validate selected skills
+    write_to_output(d, "\r\nEnter your public knowledge/facts:\r\n[Scaffold: Public knowledge instructions here]\r\nPublic: ");
+    STATE(d) = CON_QPUBLIC;
+    break;
+  }
+
+  case CON_QPUBLIC: {
+    /* Store public knowledge/facts */
+    if (d->character->player_specials->korvessa_public_knowledge)
+      free(d->character->player_specials->korvessa_public_knowledge);
+    d->character->player_specials->korvessa_public_knowledge = strdup(arg);
+    write_to_output(d, "\r\nSet your initial social standing (factions):\r\n[Scaffold: Social standing instructions here]\r\nStanding: ");
+    STATE(d) = CON_QSTANDING;
+    break;
+  }
+
+  case CON_QSTANDING: {
+    /* Store social standing (faction scores) */
+    // Accept a space-separated list of integers for each faction
+    int standings[NUM_KORVESSA_FACTIONS];
+    int n = sscanf(arg, "%d %d %d %d %d %d %d %d",
+      &standings[0], &standings[1], &standings[2], &standings[3],
+      &standings[4], &standings[5], &standings[6], &standings[7]);
+    if (n != NUM_KORVESSA_FACTIONS) {
+      write_to_output(d, "\r\nPlease enter %d numbers (one for each faction): ", NUM_KORVESSA_FACTIONS);
+      return;
+    }
+    for (int i = 0; i < NUM_KORVESSA_FACTIONS; ++i)
+      d->character->player_specials->korvessa_standing[i] = standings[i];
+    write_to_output(d, "\r\nWrite your character background (optional):\r\n[Scaffold: Background instructions here]\r\nBackground: ");
+    STATE(d) = CON_QBACKGROUND;
+    break;
+  }
+
+  case CON_QBACKGROUND: {
+    /* Store character background */
+    if (d->character->player_specials->korvessa_background)
+      free(d->character->player_specials->korvessa_background);
+    d->character->player_specials->korvessa_background = strdup(arg);
     write_to_output(d, "%s\r\nClass: ", class_menu);
     STATE(d) = CON_QCLASS;
     break;
+  }
 
   case CON_QCLASS:
     load_result = parse_class(*arg);

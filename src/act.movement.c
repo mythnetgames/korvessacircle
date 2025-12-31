@@ -399,7 +399,9 @@ int ok_pick(struct char_data *ch, obj_vnum keynum, int pickproof, int scmd)
     return (1);
 
   percent = rand_number(1, 101);
-  skill_lvl = GET_SKILL(ch, SKILL_PICK_LOCK) + dex_app_skill[GET_DEX(ch)].p_locks;
+  /* Skill check: base skill + DEX modifier */
+  int dex_mod = (GET_DEX(ch) - 10) / 2;
+  skill_lvl = GET_SKILL(ch, SKILL_PICK_LOCK) + dex_mod * 2;
 
   if (keynum == NOTHING)
     send_to_char(ch, "Odd - you can't seem to find a keyhole.\r\n");

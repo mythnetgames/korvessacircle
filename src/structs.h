@@ -741,13 +741,13 @@ struct char_player_data {
 
 /* Char's abilities.  Used in char_file_u *DO*NOT*CHANGE* */
 struct char_ability_data {
-   sbyte str;
-   sbyte str_add;      /* 000 - 100 if strength 18             */
-   sbyte intel;
-   sbyte wis;
-   sbyte dex;
-   sbyte con;
-   sbyte cha;
+   sbyte str;   /* STR: Physical strength. Influences melee damage, shove/grapple success, labor tasks. */
+   sbyte str_add;      /* 000 - 100 if strength 18 (legacy, may be unused) */
+   sbyte dex;   /* DEX: Agility and precision. Affects hit chance, stealth, lockpicking, crafting finesse. */
+   sbyte con;   /* CON: Resilience & stamina. Determines HP, stamina drain, injury thresholds, regen. */
+   sbyte intel; /* INT: Knowledge & analysis. Used for crafting complexity, learning rate, investigation. */
+   sbyte wis;   /* WIS: Perception & intuition. Detect hidden, sense motive, ritual aptitude. */
+   sbyte cha;   /* CHA: Influence & presence. Prices, persuasion, intimidation, NPC attitude. */
 };
 
 
@@ -867,6 +867,12 @@ struct player_special_data {
    long last_tell;		/* idnum of last tell from		*/
    void *last_olc_targ;		/* olc control				*/
    int last_olc_mode;		/* olc control				*/
+   /* KorvessaRPI: Extended character creation fields */
+   korvessa_race_t korvessa_race;                /* Player's chosen race */
+   korvessa_personality_t korvessa_personality;  /* Player's chosen personality */
+   int korvessa_standing[NUM_KORVESSA_FACTIONS]; /* Faction standings */
+   char *korvessa_public_knowledge;              /* Public knowledge/facts (string) */
+   char *korvessa_background;                    /* Player's background (string) */
 };
 
 
