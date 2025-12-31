@@ -1,4 +1,19 @@
 #include "korvessa_defs.h"
+#include <stdbool.h>
+
+// Stub: Personality and race name arrays
+const char *korvessa_personality_names[] = { "StubPersonality", NULL };
+const char *korvessa_race_names[] = { "StubRace", NULL };
+
+// Stub: Validation and bonus functions
+bool validate_personality(const char *input) { return true; }
+void apply_personality_bonuses(struct char_data *ch, int personality) { (void)ch; (void)personality; }
+bool validate_race(const char *input) { return true; }
+
+// Stub: Account menu/login handlers
+void show_account_login_menu(struct descriptor_data *d) { (void)d; }
+void handle_account_login(struct descriptor_data *d, const char *arg) { (void)d; (void)arg; }
+#include "korvessa_defs.h"
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
