@@ -269,8 +269,8 @@ int nameserver_is_slow = NO;
 
 const char *MENU =
 "\r\n"
-"Welcome to CircleMUD!\r\n"
-"0) Exit from CircleMUD.\r\n"
+"Welcome to KorvessaRPI!\r\n"
+"0) Exit from KorvessaRPI.\r\n"
 "1) Enter the game.\r\n"
 "2) Enter description.\r\n"
 "3) Read the background story.\r\n"
@@ -283,11 +283,11 @@ const char *MENU =
 
 const char *WELC_MESSG =
 "\r\n"
-"Welcome to the land of CircleMUD!  May your visit here be... Interesting."
+"Welcome to KorvessaRPI"
 "\r\n\r\n";
 
 const char *START_MESSG =
-"Welcome.  This is your new CircleMUD character!  You can now earn gold,\r\n"
+"Welcome.  This is your new KorvessaRPI character!  You can now earn gold,\r\n"
 "gain experience, find weapons and equipment, and much more -- while\r\n"
 "meeting people from around the world!\r\n";
 
