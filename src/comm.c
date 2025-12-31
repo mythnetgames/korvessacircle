@@ -1,3 +1,35 @@
+#include <ctype.h>
+
+// Converts |#RRGGBB to ANSI 24-bit color, and |n to reset.
+// input: source string with color tags
+// output: destination buffer (should be large enough)
+void parse_custom_color_tags(const char *input, char *output) {
+  const char *src = input;
+  char *dst = output;
+  while (*src) {
+    if (src[0] == '|' && src[1] == '#'
+      && isxdigit(src[2]) && isxdigit(src[3]) && isxdigit(src[4])
+      && isxdigit(src[5]) && isxdigit(src[6]) && isxdigit(src[7])) {
+      // Parse RRGGBB
+      char hex[3] = {0};
+      hex[0] = src[2]; hex[1] = src[3];
+      int r = strtol(hex, NULL, 16);
+      hex[0] = src[4]; hex[1] = src[5];
+      int g = strtol(hex, NULL, 16);
+      hex[0] = src[6]; hex[1] = src[7];
+      int b = strtol(hex, NULL, 16);
+      // Write ANSI code
+      dst += sprintf(dst, "\033[38;2;%d;%d;%dm", r, g, b);
+      src += 8;
+    } else if (src[0] == '|' && src[1] == 'n') {
+      dst += sprintf(dst, "\033[0m");
+      src += 2;
+    } else {
+      *dst++ = *src++;
+    }
+  }
+  *dst = '\0';
+}
 /* ************************************************************************
 *   File: comm.c                                        Part of CircleMUD *
 *  Usage: Communication, socket handling, main(), central game loop       *
@@ -1377,7 +1409,9 @@ int new_descriptor(socket_t s)
   newd->next = descriptor_list;
   descriptor_list = newd;
 
-  write_to_output(newd, "%s", GREETINGS);
+  char greetings_buf[8192];
+  parse_custom_color_tags(GREETINGS, greetings_buf);
+  write_to_output(newd, "%s", greetings_buf);
 
   return (0);
 }
