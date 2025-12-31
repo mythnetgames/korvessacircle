@@ -1,4 +1,6 @@
 /* ************************************************************************
+#ifndef STRUCTS_H
+#define STRUCTS_H
 *   File: structs.h                                     Part of CircleMUD *
 *  Usage: header file for central structures and contstants               *
 *                                                                         *
@@ -1110,7 +1112,9 @@ struct index_data {
 };
 
 struct guild_info_type {
-  int pc_class;
-  room_vnum guild_room;
-  int direction;
+   int pc_class;
+   room_vnum guild_room;
+   int direction;
 };
+
+#endif /* STRUCTS_H */
