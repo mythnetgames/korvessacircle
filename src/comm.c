@@ -2232,10 +2232,13 @@ size_t send_to_char(struct char_data *ch, const char *messg, ...)
   if (ch->desc && messg && *messg) {
     size_t left;
     va_list args;
-
+    char fmt_buf[8192];
+    char color_buf[8192];
     va_start(args, messg);
-    left = vwrite_to_output(ch->desc, messg, args);
+    vsnprintf(fmt_buf, sizeof(fmt_buf), messg, args);
     va_end(args);
+    parse_xterm_tags(fmt_buf, color_buf);
+    left = vwrite_to_output(ch->desc, "%s", color_buf);
     return left;
   }
   return 0;
