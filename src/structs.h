@@ -3,6 +3,8 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
+#define NOBODY -1 /* Used for unassigned idnum, fixes act.comm.c error */
+
 #include "korvessa_defs.h"
 
 typedef int IDXTYPE; /* Added to fix unknown type errors for vnum/rnum typedefs */
