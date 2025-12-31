@@ -3,6 +3,8 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
+typedef int IDXTYPE; /* Added to fix unknown type errors for vnum/rnum typedefs */
+
 #define SPECIAL(name) \
    int (name)(struct char_data *ch, void *me, int cmd, char *argument)
 
