@@ -8,8 +8,7 @@
   #define CON_QSTATS        1003
   #define CON_QSKILLS       1004
   #define CON_QPUBLIC       1005
-  { "craft"    , POS_STANDING, do_craft    , 0, 0 },
-  { "persuade"  , POS_STANDING, do_persuade , 0, 0 },
+
 /* ************************************************************************
 *   File: interpreter.c                                 Part of CircleMUD *
 *  Usage: parse user commands, search for specials, call ACMD functions   *
@@ -221,6 +220,8 @@ ACMD(do_zreset);
  */
 
 cpp_extern const struct command_info cmd_info[] = {
+    { "craft"    , POS_STANDING, do_craft    , 0, 0 },
+    { "persuade" , POS_STANDING, do_persuade , 0, 0 },
   { "RESERVED", 0, 0, 0, 0 },	/* this must be first -- for specprocs */
 
   /* directions must come before other commands but after RESERVED */
