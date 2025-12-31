@@ -1,3 +1,4 @@
+#include "color.h"
 #include <ctype.h>
 
 
@@ -1418,7 +1419,7 @@ int new_descriptor(socket_t s)
   descriptor_list = newd;
 
   char greetings_buf[8192];
-  parse_xterm_color_tags(GREETINGS, greetings_buf);
+  parse_xterm_tags(GREETINGS, greetings_buf);
   write_to_output(newd, "%s", greetings_buf);
 
   return (0);
