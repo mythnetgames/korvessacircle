@@ -5,6 +5,8 @@
 
 #define NOBODY -1 /* Used for unassigned idnum, fixes act.comm.c error */
 
+#define NOWHERE -1 /* Used for invalid room numbers, fixes act.informative.c error */
+
 #include "korvessa_defs.h"
 
 typedef int IDXTYPE; /* Added to fix unknown type errors for vnum/rnum typedefs */
