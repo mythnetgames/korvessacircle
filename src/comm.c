@@ -1145,10 +1145,13 @@ size_t write_to_output(struct descriptor_data *t, const char *txt, ...)
   va_list args;
   size_t left;
 
+  char color_buf[8192];
+  char fmt_buf[8192];
   va_start(args, txt);
-  left = vwrite_to_output(t, txt, args);
+  vsnprintf(fmt_buf, sizeof(fmt_buf), txt, args);
   va_end(args);
-
+  parse_xterm_tags(fmt_buf, color_buf);
+  left = vwrite_to_output(t, "%s", color_buf);
   return left;
 }
 
