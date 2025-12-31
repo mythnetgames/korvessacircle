@@ -1,64 +1,6 @@
 
 #ifndef STRUCTS_H
-#define STRUCTS_H
-/* ************************************************************************
-*   File: structs.h                                     Part of CircleMUD *
-*  Usage: header file for central structures and contstants               *
-*                                                                         *
-*  All rights reserved.  See license.doc for complete information.        *
-*                                                                         *
-*  Copyright (C) 1993, 94 by the Trustees of the Johns Hopkins University *
-*  CircleMUD is based on DikuMUD, Copyright (C) 1990, 1991.               *
-************************************************************************ */
 
-#include "conf.h"
-#include "sysdep.h"
-#include "korvessa_defs.h"
-
-/*
- * Intended use of this macro is to allow external packages to work with
- * a variety of CircleMUD versions without modifications.  For instance,
- * an IS_CORPSE() macro was introduced in pl13.  Any future code add-ons
- * could take into account the CircleMUD version and supply their own
- * definition for the macro if used on an older version of CircleMUD.
- * You are supposed to compare this with the macro CIRCLEMUD_VERSION()
- * in utils.h.  See there for usage.
- */
-#define _CIRCLEMUD	0x030100 /* Major/Minor/Patchlevel - MMmmPP */
-
-/*
- * If you want equipment to be automatically equipped to the same place
- * it was when players rented, set the define below to 1.  Please note
- * that this will require erasing or converting all of your rent files.
- * And of course, you have to recompile everything.  We need this feature
- * for CircleMUD to be complete but we refuse to break binary file
- * compatibility.
- */
-#define USE_AUTOEQ	0	/* TRUE/FALSE aren't defined yet. */
-
-
-/* End of file guard */
-#endif /* STRUCTS_H */
-/* preamble *************************************************************/
-
-/*
- * As of bpl20, it should be safe to use unsigned data types for the
- * various virtual and real number data types.  There really isn't a
- * reason to use signed anymore so use the unsigned types and get
- * 65,535 objects instead of 32,768.
- *
- * NOTE: This will likely be unconditionally unsigned later.
- */
-#define CIRCLE_UNSIGNED_INDEX	0	/* 0 = signed, 1 = unsigned */
-
-#if CIRCLE_UNSIGNED_INDEX
-# define IDXTYPE	ush_int
-# define NOWHERE	((IDXTYPE)~0)
-# define NOTHING	((IDXTYPE)~0)
-# define NOBODY		((IDXTYPE)~0)
-#else
-# define IDXTYPE	sh_int
-# define NOWHERE	(-1)	/* nil reference for rooms	*/
 # define NOTHING	(-1)	/* nil reference for objects	*/
 # define NOBODY		(-1)	/* nil reference for mobiles	*/
 #endif
