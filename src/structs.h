@@ -1,9 +1,7 @@
 
-#ifndef STRUCTS_H
 
-# define NOTHING	(-1)	/* nil reference for objects	*/
-# define NOBODY		(-1)	/* nil reference for mobiles	*/
-#endif
+#ifndef STRUCTS_H
+#define STRUCTS_H
 
 #define SPECIAL(name) \
    int (name)(struct char_data *ch, void *me, int cmd, char *argument)
