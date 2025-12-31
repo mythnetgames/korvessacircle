@@ -47,3 +47,15 @@ void apply_personality_bonuses(struct char_data *ch, korvessa_personality_t pers
 }
 
 /* TODO: Add validation and application for standing, public knowledge, background as needed */
+
+// Stub implementations to resolve linker errors
+void show_account_login_menu(struct char_data *ch) {
+    // TODO: Implement account login menu logic
+    (void)ch;
+}
+
+void handle_account_login(struct char_data *ch, const char *input) {
+    // TODO: Implement account login handling logic
+    (void)ch;
+    (void)input;
+}
