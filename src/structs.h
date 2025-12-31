@@ -1064,3 +1064,5 @@ struct guild_info_type {
    int direction;
 };
 
+#endif /* STRUCTS_H */
+
