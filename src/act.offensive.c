@@ -365,6 +365,7 @@ ACMD(do_rescue)
   char arg[MAX_INPUT_LENGTH];
   struct char_data *vict, *tmp_ch;
   int percent, prob;
+  int str_mod; // Fix: declare str_mod
 
   if (IS_NPC(ch) || !GET_SKILL(ch, SKILL_RESCUE)) {
     send_to_char(ch, "You have no idea how to do that.\r\n");
@@ -425,6 +426,7 @@ ACMD(do_kick)
   char arg[MAX_INPUT_LENGTH];
   struct char_data *vict;
   int percent, prob;
+  int str_mod; // Fix: declare str_mod
 
   if (IS_NPC(ch) || !GET_SKILL(ch, SKILL_KICK)) {
     send_to_char(ch, "You have no idea how.\r\n");

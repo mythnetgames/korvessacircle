@@ -1,6 +1,8 @@
 #ifndef KORVESSA_DEFS_H
 #define KORVESSA_DEFS_H
 
+struct char_data; // Forward declaration for function prototypes
+
 /* Races */
 typedef enum {
     RACE_HUMAN,
